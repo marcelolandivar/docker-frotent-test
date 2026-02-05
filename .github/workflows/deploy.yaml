@@ -15,12 +15,12 @@ jobs:
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
 
-#      - name: Deploy to EB
-#        uses: einaregilsson/beanstalk-deploy@v18
-#        with:
-#          application_name: docker-gh
-#          environment_name: Dockergh-env
-#          existing_bucket_name: elasticbeanstalk-us-east-1-923445559289
-#          region: us-east-1
-#          version_label: ${{ github.sha }}
-#          deployment_package: deploy.zip
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v18
+        with:
+          application_name: docker-gh
+          environment_name: Dockergh-env
+          existing_bucket_name: elasticbeanstalk-eu-central-1-939866731500
+          region: eu-central-1
+          version_label: ${{ github.sha }}
+          deployment_package: deploy.zip
