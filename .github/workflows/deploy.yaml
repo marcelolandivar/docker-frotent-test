@@ -1,3 +1,5 @@
+name: Deploy to Elastic Beanstalk
+
 on:
   push:
     branches:
@@ -7,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - run: docker build -t marcelolandivar/frontend-test -f Dockerfile.dev .
       - run: docker run -e CI=true marcelolandivar/frontend-test npm test
@@ -18,9 +20,11 @@ jobs:
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
         with:
-          application_name: docker-gh
-          environment_name: Dockergh-env
+          application_name: frontend
+          environment_name: Frontend-env
           existing_bucket_name: elasticbeanstalk-eu-central-1-939866731500
           region: eu-central-1
           version_label: ${{ github.sha }}
           deployment_package: deploy.zip
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
